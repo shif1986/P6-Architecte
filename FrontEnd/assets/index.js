@@ -13,7 +13,7 @@ async function fetchCategories() {
   let response = await fetch("http://localhost:5678/api/categories"); // recuperer les category de base de donner d'API
   const data = await response.json(); // Await = request?
   const ul = document.createElement("ul");
-  filters.appendChild(ul);
+  filters.appendChild(ul); // recuparation de ul (text)
 
   data.map((category) => {
     // parcourir interiour de tableau (swegger = backend)

@@ -1,18 +1,23 @@
 
-.container {
+form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 30%;
+  margin-top: 20%;
   position: relative;
+}
+.message-erreur{
+  color: red;
+  margin-top: 30px;
+
 }
 
 h2 {
   margin-bottom: 60px;
   font-size: 30px;
 }
-input[type="text" i] {
+input[type="email" i] {
   width: 380px;
   height: 51px;
   border: none;

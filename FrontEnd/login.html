@@ -10,6 +10,7 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="/FrontEnd/assets/login.css">
+	<link rel="stylesheet" href="/FrontEnd/assets/login.js">
 </head>
 <body>
 <header>
@@ -25,19 +26,21 @@
 	</nav>
 </header>
 <main>
-	<form>
-        <div class="container"> 
+
+	<form id="login" >
             <h2>log in</h2>
+			
+
             <label class="mail" >E-mail  </label> 
-            <input type="text"  name="username" required>
-			<div id="email-erreur">remplissez votre adresse mail</div>
+            <input type="email"  name="email" id="email" >
+
             <label>Mot de passe  </label> 
-            <input type="password" name="password" required>
-			<div id="mdp-erreur">remplissez votre mot de passe</div>
+            <input type="password" name="mdp" id="mdp">
             <button type="submit">Se Connecter</button> 
             
              <a href="#"> Mot de passe oublié </a> 
-        </div> 
+			 <div class="message-erreur" id="erreur" ></div>
+   
     </form>   
 </main>
 
@@ -49,5 +52,6 @@
 	</nav>
 </footer>
 <script src="assets/index.js"></script>
+<script src="assets/login.js"></script>
 </body>
 </html>
