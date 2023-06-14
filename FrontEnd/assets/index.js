@@ -36,8 +36,8 @@ async function fetchWorks() {
 }
 // filters
 async function filterWorks() {
-  const filters = document.querySelectorAll(".filter");
-  filters.forEach((filter) => {
+  const filtersLi = document.querySelectorAll(".filter");
+  filtersLi.forEach((filter) => {
     filter.addEventListener("click", () => { // fontion pour chaque filtre
       worksFiltered = works.filter((work) => work.category.id == filter.dataset.id); // filter - work.category.id = une fonction permet de filtrer chaque elements
       console.log(works,worksFiltered);
@@ -56,13 +56,32 @@ function displayWorks(data){
     <figcaption>${work.title}</figcaption>`;
         gallery.appendChild(workItem);
       });
-}
 
+      // connexion login et logout
+}
+function check(){
+  if(localStorage.getItem("token")){
+    let login = document.querySelector(".connexion")
+    login.innerHTML= '<a class="logout" href="index.html">logout</a>'
+    let logout = document.querySelector(".logout")
+    logout.addEventListener("click", () => {
+      localStorage.removeItem("token") // remove token
+
+    })
+filters.innerHTML="" // remove filtre mes projets
+// 
+const modif = document.createElement("projet-modif")
+modif.innerHTML= "<p> <i class=fa-thin fa-pen-to-square></i> modifier</p>"
+const headerProjet = document.querySelector(".header-projet")
+headerProjet.appendChild(modif)
+  }
+}
 addEventListener("DOMContentLoaded", async (event) => {
   // le code execute une fois que html est chargé
   await fetchCategories();
   await fetchWorks();
   await filterWorks();
+  await check();
 });
 
 

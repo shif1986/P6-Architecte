@@ -1,34 +1,3 @@
-// document.getElementById("login").addEventListener("submit", function(event) {
-
-//     let email = document.getElementById('email');
-//     let mdp = document.getElementById('mdp');
-//     let form = document.getElementById('form');
-//     let erreur = document.getElementById('erreur');
-
-//     // Mot de passe
-
-//     if(!mdp.value){
-//         erreur= "veuillez renseigner votre mot de passe"
-//     }
-//     if (mdp.value.length <= 6){
-//         erreur = "mot de passe doit etre plus que 6 character"
-//     }
-
-//     if(!email.value){ //!=pas de valeur
-//         erreur= "veuillez renseigner votre adresse mail"
-//     }
-
-//     if(erreur){
-//         e.preventDefault();
-//         document.getElementById("erreur").innerHTML = erreur;
-//         return false
-//     } else{
-//         alert('formulaire envoyé');
-//     }
-
-// }
-// );
-
 // Étape 1: Créer une fonction qui sera appelée lorsque le formulaire de connexion est soumis
 async function handleLogIn(event) {
   event.preventDefault(); // Empêche le formulaire de se soumettre normalement
@@ -36,27 +5,23 @@ async function handleLogIn(event) {
   // Étape 2: Récupérer les valeurs entrées par l'utilisateur
   let email = document.getElementById("email").value;
   let mdp = document.getElementById("mdp").value;
- let form = document.getElementById('form');
-  let erreur = document.getElementById('erreur');
+  let form = document.getElementById("form");
+  let erreur = document.getElementById("erreur");
 
-//    if(email.trim() === "" || mdp.trim() === ""){
-//       alert("Veuillez entrer votre email et votre mot de passe.");
-//   return;
-//    }
-    if(email.trim()=== ""){
-       alert("veuillez renseigner votre adresse mail");
-        return;
-    }
+  if (email.trim() === "") {
+   erreur.textContent = "veuillez renseigner votre adresse mail";
+    return;
+  }
 
-    if(mdp.trim()=== ""){
-        alert("veuillez renseigner votre mot de passe");
-         return;
-     }
+  if (mdp.trim() === "") {
+    erreur.textContent = "veuillez renseigner votre mot de passe";
+    return;
+  }
 
   // Créer un objet avec les informations d'identification
   let credentials = {
-    email: "",
-    password: "",
+    email: email,
+    password: mdp,
   };
 
   try {
@@ -68,14 +33,19 @@ async function handleLogIn(event) {
       },
       body: JSON.stringify(credentials), // Convertit les informations d'identification en JSON et les envoie dans le corps de la requête
     });
+    if(response.status===200){
+         // Analyser la réponse JSON renvoyée par l'API
+        const data = await response.json();
+        // console.log(data.message);
+        localStorage.setItem("token",data.token) //aller chercher le token
+          //   alert("Connexion réussie !");
+          window.location.href = "index.html"; // Redirige vers la page d'accueil en cas de succès de la connexion
+        
 
-    // Analyser la réponse JSON renvoyée par l'API
-    const data = await response.json();
-    // console.log(data.message);
-    if (data.message) {
-    //   alert("Connexion réussie !");
-      window.location.href = "index.html"; // Redirige vers la page d'accueil en cas de succès de la connexion
     }
+
+   
+   
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
   }
@@ -83,3 +53,7 @@ async function handleLogIn(event) {
 
 let form = document.getElementById("login");
 form.addEventListener("submit", handleLogIn);
+
+
+
+
