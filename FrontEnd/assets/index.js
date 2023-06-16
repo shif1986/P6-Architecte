@@ -1,7 +1,7 @@
 const filters = document.querySelector(".filters");
 const gallery = document.querySelector(".gallery");
 let works = [];
-let worksFiltered = []
+let worksFiltered = [];
 // const p = document.createElement("p")
 // p.textContent = "text" // content of 'p' is text
 
@@ -23,7 +23,6 @@ async function fetchCategories() {
 
     // ul.appendChild(li)
     ul.innerHTML += `<li class="filter" data-id=${category.id} >${category.name}</li>`; // class="filter" rajout de classe
-   
   });
 }
 
@@ -32,57 +31,96 @@ async function fetchWorks() {
   let response = await fetch("http://localhost:5678/api/works");
   const data = await response.json();
   works = data; // permet de recuperer en dehor de function
-  displayWorks(works)
+  displayWorks(works);
 }
 // filters
 async function filterWorks() {
   const filtersLi = document.querySelectorAll(".filter");
   filtersLi.forEach((filter) => {
-    filter.addEventListener("click", () => { // fontion pour chaque filtre
-      worksFiltered = works.filter((work) => work.category.id == filter.dataset.id); // filter - work.category.id = une fonction permet de filtrer chaque elements
-      console.log(works,worksFiltered);
-      gallery.innerHTML=''
-     displayWorks(worksFiltered)
-     
-    
-        
+    filter.addEventListener("click", () => {
+      // fonction pour chaque filtre
+      worksFiltered = works.filter(
+        (work) => work.category.id == filter.dataset.id
+      ); // filter - work.category.id = une fonction permet de filtrer chaque elements
+      console.log(works, worksFiltered);
+      gallery.innerHTML = "";
+      displayWorks(worksFiltered);
     });
   });
 }
-function displayWorks(data){
-    return  data.map((work) => {
-        const workItem = document.createElement("figure");
-        workItem.innerHTML = `<img src=${work.imageUrl} alt={work.title}>
+function displayWorks(data) {
+  // Work = est un tableau contient toutes les photos
+  return data.map((work) => {
+    // map = permet de recuperer toutes les donnes de fetch API
+    const workItem = document.createElement("figure");
+    workItem.innerHTML = `<img src=${work.imageUrl} alt=${work.title}>
     <figcaption>${work.title}</figcaption>`;
-        gallery.appendChild(workItem);
-      });
+    gallery.appendChild(workItem);
+  });
 
-      // connexion login et logout
+  // connexion login et logout
 }
-function check(){
-  if(localStorage.getItem("token")){
-    let login = document.querySelector(".connexion")
-    login.innerHTML= '<a class="logout" href="index.html">logout</a>'
-    let logout = document.querySelector(".logout")
-    logout.addEventListener("click", () => {
-      localStorage.removeItem("token") // remove token
+// Variables globale
 
-    })
-filters.innerHTML="" // remove filtre mes projets
-// 
-const modif = document.createElement("projet-modif")
-modif.innerHTML= "<p> <i class=fa-thin fa-pen-to-square></i> modifier</p>"
-const headerProjet = document.querySelector(".header-projet")
-headerProjet.appendChild(modif)
+function check() {
+  if (localStorage.getItem("token")) {
+    let login = document.querySelector(".connexion");
+    login.innerHTML = '<a class="logout" href="index.html">logout</a>';
+    let logout = document.querySelector(".logout");
+    logout.addEventListener("click", () => {
+      localStorage.removeItem("token"); // remove token
+    });
+    filters.innerHTML = ""; // remove filtre mes projets
+    //
+    const modif = document.createElement("projet-modif");
+    modif.innerHTML =
+      "<p class='modal-trigger'><i class='far fa-edit'></i> modifier</p>";
+    const headerProjet = document.querySelector(".header-projet");
+    headerProjet.appendChild(modif);
+  }
+
+  /******* MODAL ********/
+  const modalContainer = document.querySelector(".modal");
+  const modalTriggers = document.querySelectorAll(".modal-trigger");
+
+  modalTriggers.forEach((trigger) =>
+    trigger.addEventListener("click", toggleModal)
+  );
+
+  // Fonction qui s'exécute lors du clic sur un élément déclencheur
+  function toggleModal() {
+    const works = fetchWorks();
+
+    modalContainer.classList.toggle(
+      "active"
+    ); /* classlist = renvoie le nom de la class 
+    Toggle Ajoute la classe spécifiée à l'élément
+     si elle n'est pas déjà présente, ou la supprime si elle est déjà présente.*/
+
+    works.then((data) => {
+      getImageModal(data);
+    });
+  }
+}
+// Modal images
+function getImageModal(data) {
+  const modalContainer = document.querySelector(".modal");
+  if (data) {
+    data.map((imageModal) => {
+      // Créer une Variable qui s'appelle Edit qui va nous permettre d'affichier nos titre
+      const editModal = document.createElement("figure");
+      // On affiche les elements dans le HTML
+      editModal.innerHTML = `<img src=${imageModal.imageUrl} alt=${imageModal.title}>`;
+      modalContainer.appendChild(editModal);
+    });
   }
 }
 addEventListener("DOMContentLoaded", async (event) => {
-  // le code execute une fois que html est chargé
+  // le code execute une fois que html est chargé - appel les fonctions
+
   await fetchCategories();
   await fetchWorks();
   await filterWorks();
   await check();
+  await getImageModal();
 });
-
-
-
