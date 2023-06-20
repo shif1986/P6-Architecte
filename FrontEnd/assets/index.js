@@ -80,40 +80,48 @@ function check() {
   }
 
   /******* MODAL ********/
-  const modalContainer = document.querySelector(".modal");
-  const modalTriggers = document.querySelectorAll(".modal-trigger");
+ const  openModal = function(e){
+e.preventDefault()
+ }
 
-  modalTriggers.forEach((trigger) =>
-    trigger.addEventListener("click", toggleModal)
-  );
+ 
 
-  // Fonction qui s'exécute lors du clic sur un élément déclencheur
-  function toggleModal() {
-    const works = fetchWorks();
+  document.querySelectorAll(".modal-trigger").forEach(a =>{
+    a.addEventListener('click',openModal)
+    const target = document.querySelector(e.target.getAttribute())
+  })
 
-    modalContainer.classList.toggle(
-      "active"
-    ); /* classlist = renvoie le nom de la class 
-    Toggle Ajoute la classe spécifiée à l'élément
-     si elle n'est pas déjà présente, ou la supprime si elle est déjà présente.*/
+//   modalTriggers.forEach((trigger) =>
+//     trigger.addEventListener("click", toggleModal)
+//   );
 
-    works.then((data) => {
-      getImageModal(data);
-    });
-  }
-}
-// Modal images
-function getImageModal(data) {
-  const modalContainer = document.querySelector(".modal");
-  if (data) {
-    data.map((imageModal) => {
-      // Créer une Variable qui s'appelle Edit qui va nous permettre d'affichier nos titre
-      const editModal = document.createElement("figure");
-      // On affiche les elements dans le HTML
-      editModal.innerHTML = `<img src=${imageModal.imageUrl} alt=${imageModal.title}>`;
-      modalContainer.appendChild(editModal);
-    });
-  }
+//   // Fonction qui s'exécute lors du clic sur un élément déclencheur
+//   function toggleModal() {
+//                     const works = fetchWorks();
+
+//     modalContainer.classList.toggle(
+//       "active"
+//     ); /* classlist = renvoie le nom de la class 
+//     Toggle Ajoute la classe spécifiée à l'élément
+//      si elle n'est pas déjà présente, ou la supprime si elle est déjà présente.*/
+
+//     works.then((data) => {
+//       getImageModal(data);
+//     });
+//   }
+// }
+// // Modal images
+// function getImageModal(data) {
+//   const modalContainer = document.querySelector(".modal");
+//   if (data) {
+//     data.map((imageModal) => {
+//       // Créer une Variable qui s'appelle Edit qui va nous permettre d'affichier nos titre
+//       const editModal = document.createElement("figure");
+//       // On affiche les elements dans le HTML
+//       editModal.innerHTML = `<img src=${imageModal.imageUrl} alt=${imageModal.title}>`;
+//       modalContainer.appendChild(editModal);
+//     });
+//   }
 }
 addEventListener("DOMContentLoaded", async (event) => {
   // le code execute une fois que html est chargé - appel les fonctions
