@@ -2,6 +2,9 @@ const filters = document.querySelector(".filters");
 const gallery = document.querySelector(".gallery");
 let works = [];
 let worksFiltered = [];
+const modalContainer = document.querySelector(".modal");
+const modalAddPhoto = document.querySelector(".Modal-ajouter-photo");
+
 // const p = document.createElement("p")
 // p.textContent = "text" // content of 'p' is text
 
@@ -33,6 +36,7 @@ async function fetchWorks() {
   works = data; // permet de recuperer en dehor de function
   displayWorks(works);
 }
+
 // filters
 async function filterWorks() {
   const filtersLi = document.querySelectorAll(".filter");
@@ -48,6 +52,7 @@ async function filterWorks() {
     });
   });
 }
+
 function displayWorks(data) {
   // Work = est un tableau contient toutes les photos
   return data.map((work) => {
@@ -60,6 +65,7 @@ function displayWorks(data) {
 
   // connexion login et logout
 }
+
 // Variables globale
 
 function check() {
@@ -79,50 +85,88 @@ function check() {
     headerProjet.appendChild(modif);
   }
 
-  /******* MODAL ********/
- const  openModal = function(e){
-e.preventDefault()
- }
+  /******* MODAL 1 ********/
+  const openModal = function (e) {
+    modalContainer.style.display = "flex";
+  };
 
- 
-
-  document.querySelectorAll(".modal-trigger").forEach(a =>{
-    a.addEventListener('click',openModal)
-    const target = document.querySelector(e.target.getAttribute())
-  })
-
-  modalTriggers.forEach((trigger) =>
-    trigger.addEventListener("click", toggleModal)
-  );
-
-  // Fonction qui s'exécute lors du clic sur un élément déclencheur
-  function toggleModal() {
-                    const works = fetchWorks();
-
-    modalContainer.classList.toggle(
-      "active"
-    ); /* classlist = renvoie le nom de la class 
-    Toggle Ajoute la classe spécifiée à l'élément
-     si elle n'est pas déjà présente, ou la supprime si elle est déjà présente.*/
-
-    works.then((data) => {
-      getImageModal(data);
-    });
-  }
+  const closeModal = function () {
+    modalContainer.style.display = "none";
+  };
+  // creer un event for class modal trigger pour ouvrir la modal
+  document.querySelectorAll(".modal-trigger").forEach((a) => {
+    a.addEventListener("click", openModal);
+    //const target = document.querySelector(e.target.getAttribute())
+  });
+    // on creer un event for class close modal, when click to close the modal
+  document.querySelectorAll(".close-modal").forEach((a) => {
+    a.addEventListener("click", closeModal);
+  });
 }
+
 // Modal images
-function getImageModal(data) {
-  const modalContainer = document.querySelector(".modal");
-  if (data) {
-    data.map((imageModal) => {
-      // Créer une Variable qui s'appelle Edit qui va nous permettre d'affichier nos titre
-      const editModal = document.createElement("figure");
-      // On affiche les elements dans le HTML
-      editModal.innerHTML = `<img src=${imageModal.imageUrl} alt=${imageModal.title}>`;
-      modalContainer.appendChild(editModal);
-    });
-  }
+function getImageModal() {
+  works.map((imageModal) => {
+    //chemin pour recuperer les images d'API "works"
+    // Créer une Variable qui s'appelle Edit qui va nous permettre d'affichier nos titre
+    const galleryModal = document.querySelector(".gallery-modal");
+    const editModal = document.createElement("figure");
+    const photoEdit = document.createElement("article")
+    
+    editModal.className = "modal-figure";
+    // On affiche les elements dans le HTML + img
+    editModal.innerHTML = `
+            
+            <img src=${imageModal.imageUrl} class="modal-img" alt=${imageModal.title}> 
+            <img.title=${imageModal.title} classe="img-edite">éditer
+            <i class="fa-solid fa-trash-can" data-id=${imageModal.id}></i>`
+            ;
+     galleryModal.appendChild(editModal);
+  });
 }
+// Headers => L'authorization bearer avec le token dedans permet d'envoyer à l'api le fait que tu es connecté avec le token sinon ça ne fonctionnerait pas car l'api vérifie qu'il y
+// a bien ce token pour supprimer ou ajouter un work.
+async function deleteWork() {
+  const deleteButtons = document.querySelectorAll(".modal-icon-delete")
+    .forEach((button) => {
+      button.addEventListener("click", async () => {
+        const response = await fetch(
+          `http://localhost:5678/api/works/${button.dataset.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.status === 204) {
+          // supprimer le work visuellement sans rechargement de page dans la modale et la page d'accueil.
+        } else if (response.status === 401) {
+          console.log("Pas connecté.");
+        }
+      });
+    });
+}
+
+// Modal 2
+
+const openModalTwo = function(e){
+  modalContainer.style.display = "flex";
+  // document.querySelector(".Modal-ajouter-photo").addEventListener("click", openModalTwo)
+
+};
+
+const closeModalTwo = function (){
+  modalContainer.style.display = "none";
+};
+
+document.querySelector(".ajouter-img").addEventListener("click", openModalTwo)
+
+// document.querySelectorAll("close-modal").forEach((a) =>{
+//   a.addEventListener("click", closeModal);
+// });
+
 addEventListener("DOMContentLoaded", async (event) => {
   // le code execute une fois que html est chargé - appel les fonctions
 
@@ -131,4 +175,5 @@ addEventListener("DOMContentLoaded", async (event) => {
   await filterWorks();
   await check();
   await getImageModal();
+  await deleteWork();
 });
