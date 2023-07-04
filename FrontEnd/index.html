@@ -29,7 +29,7 @@
       <p class="publier">publier les changements</p>
     </div>
     <header>
-      <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+      <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
         <ul>
           <li><a href="index.html">projets </a></li>
@@ -94,31 +94,41 @@
           <button class="close-modal">X</button>
           <h2>Galerie photo</h2>
           <div class="gallery-modal"></div>
+          <!-- <div class="break-line" ></div> -->
           <button class="ajouter-img">Ajouter une photo</button>
+          
           <h3>Supprimer la Galerie</h3>
         </div>
       </div>
 
 	  <!-- Modal 2  -->
-	/
+	
 		<div class="modal-content2">
-			
+			<div class="modal-content">
+				<i class="fa-regular fa-arrow-left"></i>
 			<button class="close-modal">X</button>
 			<h2>Ajouter photo</h2>
-			<div class="content-image" >
-			<button class="ajouter-photo-2" >+ Ajouter photo</button>
-			<p>jpg, png : 4mo max</p>
-		</div>
+			
+		
 			<!-- Titre et categorie -->
-         <form class="titre-categ" action="#">
-			<label for="titre"> Titre</label>
-			<input type="text" name="titre" > <br><br>
-			<label for="categorie">Categorie</label>
-			<input type="text" name="categorie" > 
+         <form class="titre-categ">
+			<div class="content-image" >
+				<i class="fa-sharp fa-light fa-mountain-sun"></i>
+				<button type="button" class="ajouter-photo-2" >+ Ajouter photo</button>
+				<p>jpg, png : 4mo max</p>
+				<input id="image" type="file"> 
+				<img class="preview-image" src="" alt="">
+			</div>
+			
+			<label for="title"> Titre</label>
+			<input id="photo-title" type="text">  <br><br>
+			<label for="photo-categorie">Categorie</label>
+			<input id="categorie" type="text"  > 
+      <button type="submit" class="btn-valider">Valider</button>
 
 		 </form>
-          <button class="valider-image">Valider</button>
-
+          
+		 </div>
 		</div>
 
 

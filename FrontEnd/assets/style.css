@@ -250,7 +250,7 @@ p.photo-modifier {
 }
 
 /* Mes Projets */
-.description-modifier{
+.description-modifier {
   padding-bottom: 18px;
 }
 
@@ -396,10 +396,59 @@ input[type="submit"] {
   justify-content: center;
   align-items: center;
 }
+span.image-caption {
+  position: absolute;
+  bottom: -19px;
+  left: 0px;
+}
+/* Breakline */
+
+/* .break-line {
+  width: 420px;
+  height: 0px;
+  color: #b3b3b3;
+} */
+
+p.trash-box {
+  width: 17px;
+  height: 17px;
+  background-color: #000000;
+  border-radius: 2px;
+  position: absolute;
+  left: 65.14%;
+  right: 53.68%;
+  top: 5.69%;
+  bottom: 75.81%;
+}
+p.move-box {
+  display: none;
+  width: 17px;
+  height: 17px;
+  background-color: #000000;
+  border-radius: 2px;
+  position: absolute;
+  left: 33.14%;
+  right: 53.68%;
+  top: 5.69%;
+  bottom: 75.81%;
+}
 i.fa-solid.fa-trash-can {
-  position: relative;
-  bottom: 80%;
+  position: absolute;
+  bottom: 18%;
+  right: 4px;
   color: #fff;
+  font-size: 10px;
+}
+.fa-arrows-up-down-left-right:before {
+  display: none;
+  position: absolute;
+  bottom: 18%;
+  left: 3px;
+  color: #fff;
+  font-size: 10px;
+}
+.modal-img:hover p.move-box {
+  display: flex;
 }
 
 .modal-icon-delete {
@@ -452,11 +501,12 @@ button.ajouter-img {
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
+  border-top: solid #000000;
 }
 
 /* Modal 2 */
-.Modal-ajouter-photo {
-  display: flex;
+.modal-content2 {
+  display: none;
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -466,19 +516,20 @@ button.ajouter-img {
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
 }
-.modal-content2 {
-  width: 630px;
-  max-width: 100vh;
-  max-height: 100vh;
-  overflow: auto;
-  padding: 20px 100px;
-  background: #fff;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
+
+.titre-categ #image {
+  display: none;
+  position: relative;
+}
+.fa-mountain-sun:before{
+  position: absolute;
+  bottom: 25px;
+}
+.content-image i {
+  position: relative;
+  left: 0;
+  right: 0;
+  bottom: 15px;
 }
 .modal-content2 h2 {
   font-family: "Work Sans";
@@ -488,6 +539,19 @@ button.ajouter-img {
   line-height: 30px;
   color: #000000;
   margin-bottom: 30px;
+}
+.modal-content2 i {
+  font-family: "Syne";
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-weight: bold;
+  font-size: 18px;
+
+  position: relative;
+  right: 60%;
+  top: 20px;
 }
 .content-image {
   display: flex;
@@ -499,7 +563,7 @@ button.ajouter-img {
   background: #e8f1f7;
   border-radius: 3px;
 }
-.ajouter-photo {
+.ajouter-photo-2 {
   font-family: "Work Sans";
   font-style: normal;
   font-weight: 500;
@@ -512,39 +576,37 @@ button.ajouter-img {
   background: #cbd6dc;
   border-radius: 50px;
   border: none;
+  margin-bottom: 15px;
 }
 .titre-categ input {
   display: flex;
   flex-direction: column;
- margin-top: 30px;
+  margin-top: 30px;
   width: 420px;
   height: 51px;
   background: #ffffff;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
- border: none;
- column-gap: 50px;
- margin-bottom: 50px;
+  border: none;
+  column-gap: 50px;
 }
-.titre-categ label{
- position: relative;
- top: 17px;
- font-family: 'Work Sans';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-color: #3D3D3D;
-
+.titre-categ label {
+  position: relative;
+  top: 17px;
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: #3d3d3d;
 }
-.valider-image{
-  
+.valider-image {
   width: 237px;
   height: 36px;
-  background: #A7A7A7;
+  background: #a7a7a7;
   border-radius: 60px;
   border: none;
   color: #fff;
+  margin-top: 50px;
 }
-
 
 /* FOOTER */
 footer nav ul {
