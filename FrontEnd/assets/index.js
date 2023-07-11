@@ -10,9 +10,6 @@ const previewImage = document.querySelector(".preview-image");
 const textJpeg = document.querySelector(".content-image p");
 const formAdd = document.querySelector(".titre-categ");
 
-
-
-
 // const p = document.createElement("p")
 // p.textContent = "text" // content of 'p' is text
 
@@ -25,6 +22,7 @@ async function fetchCategories() {
   const data = await response.json(); // Await = request? attend la fin de  lexecution promis.()
   const ul = document.createElement("ul");
   filters.appendChild(ul); // recuparation de ul (text)
+  const selectCategorie = document.querySelector("#categorie");
 
   data.map((category) => {
     // parcourir interiour de tableau (swegger = backend)
@@ -34,6 +32,7 @@ async function fetchCategories() {
 
     // ul.appendChild(li)
     ul.innerHTML += `<li class="filter" data-id=${category.id} >${category.name}</li>`; // class="filter" rajout de classe
+    selectCategorie.innerHTML += `<option value=${category.id}>${category.name}</option>`;
   });
 }
 
@@ -42,7 +41,7 @@ async function fetchWorks() {
   let response = await fetch("http://localhost:5678/api/works");
   const data = await response.json();
   works = data; // permet de recuperer en dehor de function
-  displayWorks(works);
+  await displayWorks(works);
 }
 
 // filters
@@ -61,8 +60,9 @@ async function filterWorks() {
   });
 }
 
-function displayWorks(data) {
-  // Work = est un tableau contient toutes les photos
+async function displayWorks(data) {
+  // Work = est un tableau contient toutes les photos dans API
+  gallery.innerHTML = "";
   return data.map((work) => {
     // map = permet de recuperer toutes les donnes de fetch API
     const workItem = document.createElement("figure");
@@ -114,11 +114,12 @@ const closeModal = function () {
 };
 
 // Modal images
-function getImageModal() {
+async function getImageModal() {
+  const galleryModal = document.querySelector(".gallery-modal");
+  galleryModal.innerHTML = "";
   works.map((imageModal) => {
     //chemin pour recuperer les images d'API "works"
     // Créer une Variable qui s'appelle Edit qui va nous permettre d'affichier nos titre
-    const galleryModal = document.querySelector(".gallery-modal");
     const editModal = document.createElement("figure");
     const photoEdit = document.createElement("article");
 
@@ -130,7 +131,7 @@ function getImageModal() {
              <span class="image-caption" >éditer</span>
 
             
-           <p class='trash-box'> <i class="fa-solid fa-trash-can" data-id=${imageModal.id}></i> </p>
+           <p class='trash-box'> <i class="fa-solid fa-trash-can modal-icon-delete" data-id=${imageModal.id}></i> </p>
            <p class='move-box'> <i class="fa-solid fa-arrows-up-down-left-right"></i></p>`;
     galleryModal.appendChild(editModal);
   });
@@ -140,6 +141,7 @@ function getImageModal() {
   breakLine.innerHTML = "<hr>";
   document.body.appendChild(breakLine);
 }
+
 // Headers => L'authorization bearer avec le token dedans permet d'envoyer à l'api le fait que tu es connecté avec le token sinon ça ne fonctionnerait pas car l'api vérifie qu'il y
 // a bien ce token pour supprimer ou ajouter un work.
 async function deleteWork() {
@@ -159,8 +161,10 @@ async function deleteWork() {
 
         if (response.status === 204) {
           // supprimer le work visuellement sans rechargement de page dans la modale et la page d'accueil.
+          await fetchWorks();
+          await getImageModal();
+          console.log(works);
         } else if (response.status === 401) {
-          console.log("Pas connecté.");
         }
       });
     });
@@ -192,38 +196,35 @@ inputImage.addEventListener("change", () => {
   textJpeg.style.display = "none";
 });
 // fonctionnement de titre et categorie
-console.log(formAdd);
-formAdd.addEventListener("submit", () => {
+formAdd.addEventListener("submit", (e) => {
+  e.preventDefault();
   const validateImages = document.querySelector(".valider-image");
 
-const title = document.getElementById("photo-title").value;
-const category = document.getElementById("categorie").value;
-const image = document.getElementById("image").files[0];
+  const title = document.getElementById("photo-title").value;
+  const category = document.getElementById("categorie").value;
+  const image = document.getElementById("image").files[0];
 
+  const formData = new FormData();
 
+  formData.append("image", image);
+  formData.append("title", title);
+  formData.append("category", category);
 
   fetch("http://localhost:5678/api/works", {
     method: "POST",
-    body: JSON.stringify({
-      image:image,
-      title:title,
-      category:category,
-      
-    }),
-
+    body: formData,
     headers: {
       Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-     
     },
   })
     .then((response) => response.json())
-    .then((json) => console.log(json));
- 
+    .then((json) => {
+      fetchWorks();
+      getImageModal();
+    });
+
   // document.querySelector(".valider-image").addEventListener("click", openModalTwo);
   // validateImages.addEventListener("click", openModalTwo);
-
-
-  
 });
 
 addEventListener("DOMContentLoaded", async (event) => {

@@ -382,7 +382,8 @@ input[type="submit"] {
   display: flex;
   flex-wrap: wrap;
   gap: 3%;
-  margin-left: 50px;
+  position: relative;
+    left: 28px;
 }
 
 .modal-figure {
@@ -591,14 +592,14 @@ button.ajouter-img {
 }
 .titre-categ label {
   position: relative;
-  top: 17px;
+  top:22px;
   font-family: "Work Sans";
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   color: #3d3d3d;
 }
-.valider-image {
+.btn-valider {
   width: 237px;
   height: 36px;
   background: #a7a7a7;
@@ -606,6 +607,23 @@ button.ajouter-img {
   border: none;
   color: #fff;
   margin-top: 50px;
+  position: relative;
+  left: 22%;
+}
+select#categorie{
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  width: 420px;
+  height: 51px;
+  background: #ffffff;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  border: none;
+  column-gap: 50px;
+}
+select#categorie option {
+ position: relative;
+ top: 5px;
 }
 
 /* FOOTER */
