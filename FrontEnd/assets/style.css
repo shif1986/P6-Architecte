@@ -541,7 +541,7 @@ button.ajouter-img {
   color: #000000;
   margin-bottom: 30px;
 }
-.modal-content2 i {
+ i .fa-sharp .fa-light.fa-image {
   font-family: "Syne";
   font-weight: 700;
   cursor: pointer;

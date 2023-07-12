@@ -2,20 +2,21 @@ const filters = document.querySelector(".filters");
 const gallery = document.querySelector(".gallery");
 let works = [];
 let worksFiltered = [];
-const modalContainer = document.querySelector(".modal");
-const modalContainerTwo = document.querySelector(".modal-content2");
+const modalContainer = document.querySelector("#modal1");
+const modalContainerTwo = document.querySelector("#modal2");
 const inputImage = document.querySelector("#image");
+console.log(inputImage);
 const ajouterPhoto = document.querySelector(".ajouter-photo-2");
 const previewImage = document.querySelector(".preview-image");
 const textJpeg = document.querySelector(".content-image p");
 const formAdd = document.querySelector(".titre-categ");
 
-// const p = document.createElement("p")
-// p.textContent = "text" // content of 'p' is text
+// fetch = communiquer avec api
+// get = recuperation
+// post = enovyer les elements
+// patch = delete mise a jour
 
-// filters.appendChild(p) // recuparation de page (text)
-
-// Category
+// recuperation d'API - Category
 
 async function fetchCategories() {
   let response = await fetch("http://localhost:5678/api/categories"); // recuperer les category de base de donner d'API
@@ -25,6 +26,7 @@ async function fetchCategories() {
   const selectCategorie = document.querySelector("#categorie");
 
   data.map((category) => {
+    // data = tableau
     // parcourir interiour de tableau (swegger = backend)
     // console.log(category)
     // const li = document.createElement("li")
@@ -36,7 +38,7 @@ async function fetchCategories() {
   });
 }
 
-// Work
+// recuperation d'API -  Work
 async function fetchWorks() {
   let response = await fetch("http://localhost:5678/api/works");
   const data = await response.json();
@@ -70,12 +72,9 @@ async function displayWorks(data) {
     <figcaption>${work.title}</figcaption>`;
     gallery.appendChild(workItem);
   });
-
-  // connexion login et logout
 }
 
-// Variables globale
-
+// connexion login et logout
 function check() {
   if (localStorage.getItem("token")) {
     let login = document.querySelector(".connexion");
@@ -92,10 +91,9 @@ function check() {
     const headerProjet = document.querySelector(".header-projet");
     headerProjet.appendChild(modif);
   }
-  // creer un event for class modal trigger pour ouvrir la modal
+
   document.querySelectorAll(".modal-trigger").forEach((a) => {
-    a.addEventListener("click", openModal);
-    //const target = document.querySelector(e.target.getAttribute())
+    a.addEventListener("click", openModal);   
   });
   // on creer un event for class close modal, when click to close the modal
   document.querySelectorAll(".close-modal").forEach((a) => {
@@ -128,11 +126,9 @@ async function getImageModal() {
     editModal.innerHTML = `
             
             <img src=${imageModal.imageUrl} class="modal-img" alt=${imageModal.title}> 
-             <span class="image-caption" >éditer</span>
-
-            
-           <p class='trash-box'> <i class="fa-solid fa-trash-can modal-icon-delete" data-id=${imageModal.id}></i> </p>
-           <p class='move-box'> <i class="fa-solid fa-arrows-up-down-left-right"></i></p>`;
+            <span class="image-caption" >éditer</span>
+            <p class='trash-box'> <i class="fa-solid fa-trash-can modal-icon-delete" data-id=${imageModal.id}></i> </p>
+            <p class='move-box'> <i class="fa-solid fa-arrows-up-down-left-right"></i></p>`;
     galleryModal.appendChild(editModal);
   });
 
@@ -140,34 +136,31 @@ async function getImageModal() {
   const breakLine = document.createElement("hr");
   breakLine.innerHTML = "<hr>";
   document.body.appendChild(breakLine);
+  document.querySelectorAll(".modal-icon-delete").forEach((button) => {
+    button.addEventListener("click", async () => await deleteWork(button));
+  });
 }
 
 // Headers => L'authorization bearer avec le token dedans permet d'envoyer à l'api le fait que tu es connecté avec le token sinon ça ne fonctionnerait pas car l'api vérifie qu'il y
 // a bien ce token pour supprimer ou ajouter un work.
-async function deleteWork() {
-  const deleteButtons = document
-    .querySelectorAll(".modal-icon-delete")
-    .forEach((button) => {
-      button.addEventListener("click", async () => {
-        const response = await fetch(
-          `http://localhost:5678/api/works/${button.dataset.id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-            },
-          }
-        );
+async function deleteWork(button) {
+  const response = await fetch(
+    `http://localhost:5678/api/works/${button.dataset.id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    }
+  );
 
-        if (response.status === 204) {
-          // supprimer le work visuellement sans rechargement de page dans la modale et la page d'accueil.
-          await fetchWorks();
-          await getImageModal();
-          console.log(works);
-        } else if (response.status === 401) {
-        }
-      });
-    });
+  if (response.status === 204) {
+    // supprimer le work visuellement sans rechargement de page dans la modale et la page d'accueil.
+    await fetchWorks();
+    await getImageModal();
+    console.log(works);
+  } else if (response.status === 401) {
+  }
 }
 
 // Modal 2
@@ -184,8 +177,10 @@ const closeModalTwo = function () {
 };
 
 document.querySelector(".ajouter-img").addEventListener("click", openModalTwo);
-ajouterPhoto.addEventListener("click", () => {
+ajouterPhoto.addEventListener("click", (e) => {
+  console.log(inputImage,e);
   inputImage.click();
+  console.log("Clicked");
 });
 inputImage.addEventListener("change", () => {
   const selectedImage = inputImage.files[0];
@@ -196,8 +191,10 @@ inputImage.addEventListener("change", () => {
   textJpeg.style.display = "none";
 });
 // fonctionnement de titre et categorie
-formAdd.addEventListener("submit", (e) => {
+// post = envoyer les infos vers le back 
+formAdd.addEventListener("submit", async (e) => {
   e.preventDefault();
+  
   const validateImages = document.querySelector(".valider-image");
 
   const title = document.getElementById("photo-title").value;
@@ -209,19 +206,24 @@ formAdd.addEventListener("submit", (e) => {
   formData.append("image", image);
   formData.append("title", title);
   formData.append("category", category);
-
-  fetch("http://localhost:5678/api/works", {
+  const response =  await fetch("http://localhost:5678/api/works", {
     method: "POST",
     body: formData,
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`, // token sucurise le code
     },
-  })
-    .then((response) => response.json())
-    .then((json) => {
-      fetchWorks();
-      getImageModal();
-    });
+  });
+  // 
+  if (response.status === 201) {
+    console.log('works');
+    // supprimer le work visuellement sans rechargement de page dans la modale et la page d'accueil.
+    //await fetchWorks();
+    //await getImageModal();
+    console.log(works);
+  } else if (response.status === 401) {
+    console.error('401');
+  }
+  // e.stopPropagation();
 
   // document.querySelector(".valider-image").addEventListener("click", openModalTwo);
   // validateImages.addEventListener("click", openModalTwo);
@@ -235,5 +237,6 @@ addEventListener("DOMContentLoaded", async (event) => {
   await filterWorks();
   await check();
   await getImageModal();
-  await deleteWork();
 });
+
+// apres avoir envoie img, il faut clear l'image
