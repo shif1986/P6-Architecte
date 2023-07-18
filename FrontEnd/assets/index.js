@@ -2,19 +2,26 @@ const filters = document.querySelector(".filters");
 const gallery = document.querySelector(".gallery");
 let works = [];
 let worksFiltered = [];
+
+// modal 1
 const modalContainer = document.querySelector("#modal1");
 const modalContainerTwo = document.querySelector("#modal2");
 const inputImage = document.querySelector("#image");
 console.log(inputImage);
+
+// Modal 2
 const ajouterPhoto = document.querySelector(".ajouter-photo-2");
 const previewImage = document.querySelector(".preview-image");
 const textJpeg = document.querySelector(".content-image p");
 const formAdd = document.querySelector(".titre-categ");
 
-// fetch = communiquer avec api
+// fetch = communiquer avec api, aller recuperer
+// await attend a partir de moment d'un envoie, sans await les requette envoie constanment, vas charger l'API?
 // get = recuperation
 // post = enovyer les elements
 // patch = delete mise a jour
+// foreach = 
+// adeventlistener = 
 
 // recuperation d'API - Category
 
@@ -28,11 +35,6 @@ async function fetchCategories() {
   data.map((category) => {
     // data = tableau
     // parcourir interiour de tableau (swegger = backend)
-    // console.log(category)
-    // const li = document.createElement("li")
-    // li.textContent = category.name // content de LI
-
-    // ul.appendChild(li)
     ul.innerHTML += `<li class="filter" data-id=${category.id} >${category.name}</li>`; // class="filter" rajout de classe
     selectCategorie.innerHTML += `<option value=${category.id}>${category.name}</option>`;
   });
@@ -62,8 +64,9 @@ async function filterWorks() {
   });
 }
 
+          //Recuperation d'images 
+ // Work = est un tableau contient toutes les photos dans API
 async function displayWorks(data) {
-  // Work = est un tableau contient toutes les photos dans API
   gallery.innerHTML = "";
   return data.map((work) => {
     // map = permet de recuperer toutes les donnes de fetch API
@@ -171,6 +174,7 @@ const openModalTwo = function (e) {
 };
 
 // Ajouter image
+const imagePreview = document.querySelector(".image-preview");
 
 const closeModalTwo = function () {
   modalContainerTwo.style.display = "none";
@@ -189,6 +193,8 @@ inputImage.addEventListener("change", () => {
   previewImage.style.width = "auto";
   previewImage.style.maxHeight = "100%";
   textJpeg.style.display = "none";
+  imagePreview.style.display ="none";
+
 });
 // fonctionnement de titre et categorie
 // post = envoyer les infos vers le back 
@@ -217,8 +223,10 @@ formAdd.addEventListener("submit", async (e) => {
   if (response.status === 201) {
     console.log('works');
     // supprimer le work visuellement sans rechargement de page dans la modale et la page d'accueil.
-    //await fetchWorks();
-    //await getImageModal();
+    await fetchWorks();
+    await getImageModal();
+    await closeModal();
+    await closeModalTwo();
     console.log(works);
   } else if (response.status === 401) {
     console.error('401');
@@ -239,4 +247,4 @@ addEventListener("DOMContentLoaded", async (event) => {
   await getImageModal();
 });
 
-// apres avoir envoie img, il faut clear l'image
+// apres avoir envoyé ou rajout de l'img, il faut faire un clear l'image. car le navigateur ne charge plus
