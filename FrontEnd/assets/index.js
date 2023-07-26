@@ -78,7 +78,7 @@ async function displayWorks(data) {
 }
 
 // connexion login et logout
-  function check() {
+function check() {
   // localstorage = navigateur local ou met le token
   if (localStorage.getItem("token")) {
     let login = document.querySelector(".connexion");
@@ -119,6 +119,7 @@ const closeModal = function () {
 async function getImageModal() {
   const galleryModal = document.querySelector(".gallery-modal");
   galleryModal.innerHTML = "";
+
   works.map((imageModal) => {
     //chemin pour recuperer les images d'API "works"
 
@@ -134,14 +135,12 @@ async function getImageModal() {
             <img src=${imageModal.imageUrl} class="modal-img" alt=${imageModal.title}> 
             <span class="image-caption" >éditer</span>
             <p class='trash-box'> <i class="fa-solid fa-trash-can modal-icon-delete" data-id=${imageModal.id}></i> </p>
-            <p class='move-box'> <i class="fa-solid fa-arrows-up-down-left-right"></i></p>`;
+            <p class='move-box'> <i class="fa-solid fa-up-down-left-right" data-id=${imageModal.id}></i> </p>`;
     galleryModal.appendChild(editModal);
   });
-
   // breakline
-  const breakLine = document.createElement("hr");
-  breakLine.innerHTML = "<hr>";
-  document.body.appendChild(breakLine);
+
+
   document.querySelectorAll(".modal-icon-delete").forEach((button) => {
     button.addEventListener("click", async () => await deleteWork(button));
   });
@@ -174,6 +173,21 @@ const openModalTwo = function (e) {
   modalContainerTwo.style.display = "flex";
   closeModal();
   // document.querySelector(".Modal-ajouter-photo").addEventListener("click", openModalTwo)
+
+
+  // arrow left
+  const arrowLeft = document.querySelector(".fa-arrow-left");
+  
+arrowLeft.addEventListener('click', handleArrowLeftClick);
+
+function handleArrowLeftClick() {
+  closeModalTwo(); // Ferme modal 2
+  openModal(); // Ouvre Modal 1 (La modal "Ajouter une photo")
+}
+
+  const closeModalTwo = () => {
+    modalContainerTwo.style.display = "none";
+  }
 };
 
 // Ajouter image

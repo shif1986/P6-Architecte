@@ -364,6 +364,17 @@ input[type="submit"] {
   background: rgba(0, 0, 0, 0.3);
 }
 
+.break-line{
+
+  color: #B3B3B3;
+  width: 370px;
+
+}
+.break-line2{
+  margin-top: 50px;
+}
+
+
 .modal-content {
   width: 630px;
   max-width: 100vh;
@@ -422,17 +433,23 @@ p.trash-box {
   bottom: 75.81%;
 }
 p.move-box {
-  display: none;
+  display: flex;
   width: 17px;
   height: 17px;
+  color: white;
   background-color: #000000;
   border-radius: 2px;
   position: absolute;
-  left: 33.14%;
+  left: 39.14%;
   right: 53.68%;
   top: 5.69%;
   bottom: 75.81%;
+  opacity: 0;
 }
+.modal-figure:hover p.move-box {
+opacity: 1;
+}
+
 i.fa-solid.fa-trash-can {
   position: absolute;
   bottom: 18%;
@@ -448,9 +465,13 @@ i.fa-solid.fa-trash-can {
   color: #fff;
   font-size: 10px;
 }
-.modal-img:hover p.move-box {
-  display: flex;
+.fa-arrows-alt:before, .fa-up-down-left-right:before {
+  position: absolute;
+  font-size: 12px;
+  left: 2.5px;
+  top:2.5px;
 }
+
 
 .modal-icon-delete {
   position: absolute;
@@ -606,7 +627,7 @@ button.ajouter-img {
   border-radius: 60px;
   border: none;
   color: #fff;
-  margin-top: 50px;
+  margin-top: 40px;
   position: relative;
   left: 22%;
 }
@@ -624,6 +645,15 @@ select#categorie{
 select#categorie option {
  position: relative;
  top: 5px;
+}
+ .fa-arrow-left:before {
+  position: relative;
+  right: 200px;
+  top: 25px;
+  font-size: 18px;
+}
+.fa-image:before{
+  font-size: 50px;
 }
 
 /* FOOTER */
