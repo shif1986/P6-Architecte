@@ -655,6 +655,13 @@ select#categorie option {
 .fa-image:before{
   font-size: 50px;
 }
+.message-erreur{
+  color: red;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+
+}
 
 /* FOOTER */
 footer nav ul {

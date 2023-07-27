@@ -34,7 +34,7 @@ async function fetchCategories() {
 
   data.map((category) => {
     // data = tableau
-    // parcourir interiour de tableau (swegger = backend)
+    // parcourir interiour de tableau 
     ul.innerHTML += `<li class="filter" data-id=${category.id} >${category.name}</li>`; // class="filter" rajout de classe
     selectCategorie.innerHTML += `<option value=${category.id}>${category.name}</option>`;
   });
@@ -185,10 +185,34 @@ function handleArrowLeftClick() {
   openModal(); // Ouvre Modal 1 (La modal "Ajouter une photo")
 }
 
+// Restriction pour ajouter img
+// const categorie = document.querySelectorAll(".categorie");
+// const ajouterImgTwo = document.querySelector(".ajouter-photo-2");
+// const ajouterTitre = document.querySelector(".photo-title");
+
+
+// // ModalTwoContent.addEventListener('click', restrictElements);
+
+// // Tu me vérifie si la valeur de l'input photo-title est vide ""
+// if (ajouterImgTwo.value==="" || ajouterTitre.value===""){
+//   alert("veillez renseignez tous les champs");
+
+
+// }
+
+// function restrictElements(){
+//   if()
+
+// }
+
+
+
   const closeModalTwo = () => {
     modalContainerTwo.style.display = "none";
   }
 };
+
+
 
 // Ajouter image
 const imagePreview = document.querySelector(".image-preview");
@@ -213,8 +237,9 @@ inputImage.addEventListener("change", () => {
   imagePreview.style.display = "none";
 
 });
-// fonctionnement de titre et categorie
-// post = envoyer les infos vers le back 
+
+// Validateur de ajouter img
+
 formAdd.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -229,7 +254,20 @@ formAdd.addEventListener("submit", async (e) => {
   formData.append("image", image);
   formData.append("title", title);
   formData.append("category", category);
-  const response = await fetch("http://localhost:5678/api/works", {
+  let erreur = document.getElementById("erreur");
+
+  // Effectuer les vérifications de validation
+
+  if (!title || !category || !image){
+  // Si l'un des c'est champs sont vide, affiche un message d'erreur
+  // !title: Cela vérifie si la variable title est évaluée à faux. !=signifie faux
+  erreur.textContent = "Veillez renseignez tous les champs";
+
+    return  // Arrete la soumission du formulaire
+}
+
+
+    const response = await fetch("http://localhost:5678/api/works", {
     method: "POST",
     body: formData,
     headers: {
@@ -248,11 +286,10 @@ formAdd.addEventListener("submit", async (e) => {
   } else if (response.status === 401) {
     console.error('401');
   }
-  // e.stopPropagation();
 
-  // document.querySelector(".valider-image").addEventListener("click", openModalTwo);
-  // validateImages.addEventListener("click", openModalTwo);
 });
+
+
 
 addEventListener("DOMContentLoaded", async (event) => {
   // le code execute une fois que html est chargé - appel les fonctions
@@ -264,4 +301,3 @@ addEventListener("DOMContentLoaded", async (event) => {
   await getImageModal();
 });
 
-// apres avoir envoyé ou rajout de l'img, il faut faire un clear l'image. car le navigateur ne charge plus
